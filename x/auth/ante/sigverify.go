@@ -198,6 +198,8 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 			return ctx, err
 		}
 
+		ctx.Logger().Info("SigVerificationDecorator", "sigs idx", i, "address", signerAccs[i].GetAddress(), "signerAccs seq", signerAccs[i].GetSequence())
+
 		// retrieve signBytes of tx
 		signBytes := sigTx.GetSignBytes(ctx, signerAccs[i])
 
