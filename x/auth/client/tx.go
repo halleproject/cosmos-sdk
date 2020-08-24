@@ -78,24 +78,25 @@ func CompleteAndBroadcastTxCLI(txBldr authtypes.TxBuilder, cliCtx context.CLICon
 		return nil
 	}
 
-	if !cliCtx.SkipConfirm {
-		stdSignMsg, err := txBldr.BuildSignMsg(msgs)
+	//if !cliCtx.SkipConfirm {
+	stdSignMsg, err := txBldr.BuildSignMsg(msgs)
+	if err != nil {
+		return err
+	}
+
+	var json []byte
+	if viper.GetBool(flags.FlagIndentResponse) {
+		json, err = cliCtx.Codec.MarshalJSONIndent(stdSignMsg, "", "  ")
 		if err != nil {
-			return err
+			panic(err)
 		}
+	} else {
+		json = cliCtx.Codec.MustMarshalJSON(stdSignMsg)
+	}
 
-		var json []byte
-		if viper.GetBool(flags.FlagIndentResponse) {
-			json, err = cliCtx.Codec.MarshalJSONIndent(stdSignMsg, "", "  ")
-			if err != nil {
-				panic(err)
-			}
-		} else {
-			json = cliCtx.Codec.MustMarshalJSON(stdSignMsg)
-		}
-
-		_, _ = fmt.Fprintf(os.Stderr, "%s\n\n", json)
-
+	_, _ = fmt.Fprintf(os.Stderr, "%s\n\n", json)
+	//print tx info for batch
+	if !cliCtx.SkipConfirm {
 		buf := bufio.NewReader(os.Stdin)
 		ok, err := input.GetConfirmation("confirm transaction before signing and broadcasting", buf)
 		if err != nil || !ok {
