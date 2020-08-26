@@ -251,10 +251,25 @@ func (isd IncrementSequenceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 	// increment sequence of all signers
 	for _, addr := range sigTx.GetSigners() {
 		acc := isd.ak.GetAccount(ctx, addr)
+
+		ctx.Logger().Info("IncrementSequenceDecorator",
+			"acc address", acc.GetAddress(), "acc seq", acc.GetSequence())
+
 		if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
 			panic(err)
 		}
+
 		isd.ak.SetAccount(ctx, acc)
+
+		newSeqAcc, err := GetSignerAcc(ctx, isd.ak, acc.GetAddress())
+
+		if err != nil {
+			return ctx, err
+		}
+
+		ctx.Logger().Info("IncrementSequenceDecorator",
+			"newSeqAcc address", newSeqAcc.GetAddress(), "newSeqAcc seq", newSeqAcc.GetSequence())
+
 	}
 
 	return next(ctx, tx, simulate)
