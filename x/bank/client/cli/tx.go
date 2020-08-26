@@ -114,6 +114,8 @@ func SendTxCmd(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
+			fmt.Println("bank send ------------------------------", "cliCtx.Simulate", cliCtx.Simulate)
+
 			// build and sign the transaction, then broadcast to Tendermint
 			msg := types.NewMsgSend(cliCtx.GetFromAddress(), to, coins)
 			return authclient.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
