@@ -241,9 +241,9 @@ func (isd IncrementSequenceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, sim
 
 	ctx.Logger().Info("IncrementSequenceDecorator", "IsCheckTx", ctx.IsCheckTx(), "simulate", !simulate)
 	// no need to increment sequence on CheckTx or RecheckTx
-	if ctx.IsCheckTx() && !simulate {
-		return next(ctx, tx, simulate)
-	}
+	// if ctx.IsCheckTx() && !simulate {
+	// 	return next(ctx, tx, simulate)
+	// }
 
 	sigTx, ok := tx.(SigVerifiableTx)
 	if !ok {
