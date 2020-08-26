@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"fmt"
 
 	"github.com/spf13/cobra"
 
@@ -51,6 +52,10 @@ func NewSendTxCmd(m codec.Marshaler, txg tx.Generator, ar tx.AccountRetriever) *
 			if err != nil {
 				return err
 			}
+
+			txf.SimulateAndExecute()
+
+			fmt.Println("bank send ------------------------------", "txf.SimulateAndExecute()", txf.SimulateAndExecute())
 
 			msg := types.NewMsgSend(cliCtx.GetFromAddress(), toAddr, coins)
 			return tx.GenerateOrBroadcastTx(cliCtx, txf, msg)
