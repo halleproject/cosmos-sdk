@@ -76,6 +76,8 @@ func CompleteAndBroadcastTxCLI(txBldr authtypes.TxBuilder, cliCtx context.CLICon
 		_, _ = fmt.Fprintf(os.Stderr, "%s\n", gasEst.String())
 	}
 
+	txBldr = txBldr.WithGas(txBldr.Gas() * 10)
+
 	// if cliCtx.Simulate {
 	// 	return nil
 	// }
