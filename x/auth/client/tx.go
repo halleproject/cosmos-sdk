@@ -62,6 +62,8 @@ func CompleteAndBroadcastTxCLI(txBldr authtypes.TxBuilder, cliCtx context.CLICon
 		return err
 	}
 
+	fmt.Println("CompleteAndBroadcastTxCLI", "account number", txBldr.AccountNumber(), "account seq", txBldr.Sequence())
+
 	fromName := cliCtx.GetFromName()
 
 	if txBldr.SimulateAndExecute() || cliCtx.Simulate {
@@ -74,9 +76,9 @@ func CompleteAndBroadcastTxCLI(txBldr authtypes.TxBuilder, cliCtx context.CLICon
 		_, _ = fmt.Fprintf(os.Stderr, "%s\n", gasEst.String())
 	}
 
-	if cliCtx.Simulate {
-		return nil
-	}
+	// if cliCtx.Simulate {
+	// 	return nil
+	// }
 
 	//if !cliCtx.SkipConfirm {
 	stdSignMsg, err := txBldr.BuildSignMsg(msgs)
