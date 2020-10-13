@@ -29,8 +29,9 @@ tags:
   - name: Misc
     description: Query app version
 schemes:
+  - http
   - https
-host: api.cosmos.network
+#host: api.cosmos.network
 securityDefinitions:
   kms:
     type: basic
